@@ -25,11 +25,34 @@ O objetivo do projeto é analisar os dados históricos dos testes, relacionando,
 
 O desenvolvimento será realizado utilizando o Google Colab e demais ferramentas auxiliares conforme a necessidade, fornecendo ao usuário final uma interface em que ele poderá inserir os dados do novo veículo e obter sua classificação estimada (quantas estrelas ele terá).
 
+</br>
 
-# 🚀 Funcionamento
+# 🔧Documentação do Projeto
+O Projeto é composto de 3 arquivos principais:
+- scrappingNew.py
+- CD.ipynb
+- StreamlitCD.ipynb
+
+Os arquivos `.ipynb` são os notebooks que podem ser executados diretamente no Google Colab. Já o arquivo `.py` é um script que deve ser executado diretamente. Para isso é necessário instalar as bibliotecas:
+```bash
+pip install -r /path/to/requirements.txt
+```  
+
+## 📌 scrappingNew.py
+
+
+</br>
+
+# 📊 Conclusões
+## 🚀 Funcionamento
 ![alt text](images/image.png)
 ![alt text](images/image-1.png)
-# 🛜 Links do Colab
+
+## 📽️ Video
+
+## 📝 Artigo
+
+## 🛜 Links do Colab
 
 [Colab](https://colab.research.google.com/drive/1TCuvs70iniyzbc2-su6D5rB1eK1FduuT#scrollTo=NXIfPvveenWZ)
 
