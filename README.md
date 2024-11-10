@@ -11,6 +11,7 @@ ext install yzhang.markdown-all-in-one
 
 To generate the TOC, open the command palette (Control/⌘+Shift+P) and select the Markdown All in One: Create Table of Contents option.
 -->
+
 - [Crash Test](#crash-test)
   - [🧑🏻‍💻 Integrantes](#-integrantes)
   - [🚩 Sobre o Projeto](#-sobre-o-projeto)
@@ -23,6 +24,12 @@ To generate the TOC, open the command palette (Control/⌘+Shift+P) and select t
       - [Função `criar_df(url)`](#função-criar_dfurl)
       - [Processamento Paralelo com `ThreadPoolExecutor`](#processamento-paralelo-com-threadpoolexecutor)
     - [Saída e Armazenamento dos Dados:](#saída-e-armazenamento-dos-dados)
+  - [📌 CD.py](#-cdpy)
+    - [Descrição](#descrição-1)
+      - [Funcionalidades](#funcionalidades-1)
+    - [Estrutura do Notebook](#estrutura-do-notebook)
+    - [Escolha do Modelo](#escolha-do-modelo)
+    - [Fonte dos Dados](#fonte-dos-dados)
 - [📊 Conclusões](#-conclusões)
   - [🚀 Funcionamento](#-funcionamento)
   - [📽️ Video](#️-video)
@@ -43,7 +50,7 @@ Nome: Matheus Marins Bernardello 			RA: 20.00286-6
 O projeto escolhido é do tipo 2, Tabular Data Classification
 Ele irá focar no uso de dados obtidos a partir de web scraping e/ou uso de APIs, focando nos métodos tradicionais de Machine Learning para classificação de dados.
 
-O projeto baseia-se na obtenção de dados de dados de colisão de veículos (crash test) utilizando técnicas de web scraping e/ou uso de APIs dos órgão classificadores, mais especiificamente o [EURONCAP](https://www.euroncap.com/en).
+O projeto baseia-se na obtenção de dados de dados de colisão de veículos (crash test) utilizando técnicas de web scraping e/ou uso de APIs dos órgão classificadores, mais especificamente o [EURONCAP](https://www.euroncap.com/en).
 
 >O EURONCAP foi escolhido, pois ele tem publicado em seu website o teste de mais veículos que o LATINCAP, e possui uma formatação mais padronizada e completa que os demais órgãos classificadores.
 
@@ -138,6 +145,49 @@ Neste exemplo, `max_workers=5` limita o número de threads a 5, mas este valor p
 
 ### Saída e Armazenamento dos Dados: 
 O DataFrame resultante é r exportado para um arquivo CSV, permitindo fácil integração com outras ferramentas e softwares de análise de dados.
+
+</br>
+
+## 📌 CD.py
+### Descrição
+Este notebook realiza uma análise de dados sobre testes de colisão de veículos, com o objetivo de explorar e prever características de segurança dos veículos com base em várias métricas de segurança. O fluxo de trabalho inclui carregamento, limpeza, transformação de dados e treinamento e avaliação de um modelo de aprendizado de máquina.
+
+#### Funcionalidades
+- **Carregamento e Limpeza de Dados:** Carrega o conjunto de dados de crash test e realiza transformações nas colunas, incluindo remoção de unidades e conversão de tipos.
+- **Tratamento de Dados Faltantes:** Identifica colunas numéricas com valores ausentes e os preenche usando valores aleatórios dentro da faixa de média ± desvio padrão.
+- **Treinamento e Avaliação de Modelo:** Treina um classificador Random Forest para prever resultados de segurança com base em características dos veículos e gera métricas de avaliação do modelo.
+
+### Estrutura do Notebook
+
+1. **Importação das Bibliotecas**: Inclui `pandas`, `numpy` e módulos do `scikit-learn` para manipulação de dados e aprendizado de máquina.
+2. **Carregamento dos Dados**: Lê os dados de um arquivo CSV e exibe as primeiras linhas para visualização inicial.
+3. **Limpeza e Transformação**:
+   - Remove unidades de medidas em colunas específicas (por exemplo, remove "kg" da coluna de peso).
+   - Converte as colunas para tipos apropriados para facilitar a análise.
+4. **Tratamento de Valores Ausentes**:
+   - Identifica colunas numéricas e preenche valores ausentes com números aleatórios, gerados dentro da faixa da média ± desvio padrão da coluna correspondente.
+5. **Treinamento e Avaliação de Modelo**:
+   - Divide o conjunto de dados em treinamento e teste.
+   - Treina um classificador `RandomForestClassifier` para prever resultados de segurança dos veículos.
+   - Avalia o modelo usando métricas como acurácia e relatório de classificação.
+
+### Escolha do Modelo
+O modelo escolhido, `RandomForestClassifier`, é um método de aprendizado baseado em árvores de decisão e apresenta vantagens específicas para análise de dados de segurança de veículos:
+
+1. **Robustez e Capacidade de Generalização**: 
+   O Random Forest é composto de múltiplas árvores de decisão, o que permite uma maior capacidade de generalização, reduzindo o risco de overfitting. Isso é especialmente útil para dados complexos e com possíveis interações entre variáveis, como os encontrados em dados de crash test.
+
+2. **Interpretação e Importância das Variáveis**:
+   Uma característica essencial do Random Forest é a capacidade de avaliar a importância das variáveis, possibilitando a identificação das métricas de segurança que mais influenciam a classificação de segurança dos veículos.
+
+3. **Manejo de Dados Desbalanceados e Valores Faltantes**:
+   A construção aleatória de amostras para cada árvore permite que o modelo lide bem com dados desbalanceados. Além disso, o Random Forest é relativamente robusto a valores faltantes, o que o torna uma boa escolha dado que o conjunto de dados original apresenta valores ausentes.
+
+Essas qualidades tornam o `RandomForestClassifier` adequado para o tipo de análise que estamos realizando, focada em prever com precisão a segurança dos veículos com base em uma série de variáveis complexas e possivelmente interdependentes.
+
+### Fonte dos Dados
+O notebook carrega os dados de um link para um arquivo CSV com os dados já coletados do web scrapping; 
+
 
 </br>
 
