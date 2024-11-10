@@ -24,14 +24,18 @@ To generate the TOC, open the command palette (Control/⌘+Shift+P) and select t
       - [Função `criar_df(url)`](#função-criar_dfurl)
       - [Processamento Paralelo com `ThreadPoolExecutor`](#processamento-paralelo-com-threadpoolexecutor)
     - [Saída e Armazenamento dos Dados:](#saída-e-armazenamento-dos-dados)
-  - [📌 CD.py](#-cdpy)
+  - [📌 CD.ipynb](#-cdipynb)
     - [Descrição](#descrição-1)
       - [Funcionalidades](#funcionalidades-1)
     - [Estrutura do Notebook](#estrutura-do-notebook)
     - [Escolha do Modelo](#escolha-do-modelo)
     - [Fonte dos Dados](#fonte-dos-dados)
+  - [📌 StreamlitCD.ipynb](#-streamlitcdipynb)
+    - [Descrição](#descrição-2)
+    - [Funcionalidades](#funcionalidades-2)
+    - [Estrutura](#estrutura)
 - [📊 Conclusões](#-conclusões)
-  - [🚀 Funcionamento](#-funcionamento)
+  - [🚀 Funcionamento e Como Utilizar](#-funcionamento-e-como-utilizar)
   - [📽️ Video](#️-video)
   - [📝 Artigo](#-artigo)
   - [🛜 Links do Colab](#-links-do-colab)
@@ -148,7 +152,7 @@ O DataFrame resultante é r exportado para um arquivo CSV, permitindo fácil int
 
 </br>
 
-## 📌 CD.py
+## 📌 CD.ipynb
 ### Descrição
 Este notebook realiza uma análise de dados sobre testes de colisão de veículos, com o objetivo de explorar e prever características de segurança dos veículos com base em várias métricas de segurança. O fluxo de trabalho inclui carregamento, limpeza, transformação de dados e treinamento e avaliação de um modelo de aprendizado de máquina.
 
@@ -188,11 +192,51 @@ Essas qualidades tornam o `RandomForestClassifier` adequado para o tipo de anál
 ### Fonte dos Dados
 O notebook carrega os dados de um link para um arquivo CSV com os dados já coletados do web scrapping; 
 
+</br>
+
+## 📌 StreamlitCD.ipynb
+### Descrição
+Esse arquivo possui o mesmo código que `CD.ipynb` tratando-se da análise dos dados e treinamento do modelo. Porém foram feitas as modificações necessárias para criar um frontend Streamlit
+
+### Funcionalidades
+- **Carregamento e Limpeza de Dados**: O aplicativo carrega um conjunto de dados de crash test e realiza transformações em colunas específicas, incluindo a remoção de unidades e conversão de valores para tipos apropriados.
+- **Treinamento de Modelo Keras**: Treina um modelo de rede neural utilizando o Keras para prever a classificação de segurança do veículo com base em variáveis selecionadas.
+- **Interface Interativa**: Permite ao usuário inserir características de veículos e ver a previsão do modelo em tempo real.
+- **Visualização de Desempenho do Modelo**: Mostra a acurácia do modelo e gráficos de histórico de treinamento.
+
+### Estrutura 
+1. **Configuração do Ambiente**:
+   - Instala o Streamlit, Keras, e usa o Localtunnel para expor a aplicação local para a internet.
+  
+2. **Interface do Streamlit**:
+   - Define a interface interativa com Streamlit, que inclui entradas para variáveis como peso do veículo, nota de segurança, facilidade de instalação de cadeirinha infantil, entre outras.
+   
+3. **Funções Principais**:
+   - `load_data()`: Carrega os dados de um link CSV e faz a limpeza necessária.
+   - `preprocess_data(data)`: Preenche valores ausentes nas colunas numéricas com valores gerados aleatoriamente dentro da faixa de média ± desvio padrão.
+   - `train_keras_model(data)`: Treina um modelo de rede neural com Keras, utilizando variáveis categóricas e numéricas após pré-processamento, e avalia o modelo com métricas de acurácia.
+   - `user_input_features()`: Interface para coletar dados do usuário sobre o veículo para previsão.
+
+4. **Treinamento e Avaliação**:
+   - Exibe a acurácia do modelo e o gráfico de histórico de treinamento usando Streamlit.
+   - Gera a previsão para as entradas fornecidas pelo usuário.
+
 
 </br>
 
 # 📊 Conclusões
-## 🚀 Funcionamento
+## 🚀 Funcionamento e Como Utilizar
+Para utilizar o script com frontend Streamlit `StreamlitCD.ipynb` executa-se todas as células. Abaixo da célula `!wget -q -O - ipv4.icanhazip.com` irá aparecer o IP público:
+![alt text](images/image-2.png)
+
+Já abaixo da célula `!npx localtunnel --port 8501` aparecerá um link:
+![alt text](images/image-3.png)
+
+Ao acessá-lo você será apresentado à interface do projeto
+
+> Caso seja apresentado a uma página pedindo uma senha, ela será o IP público descrito acima
+
+
 ![alt text](images/image.png)
 ![alt text](images/image-1.png)
 
@@ -206,3 +250,5 @@ O notebook carrega os dados de um link para um arquivo CSV com os dados já cole
 
 
 [Colab + Streamlit](https://colab.research.google.com/drive/1uKFoF86mV_WHvfIHBgtEZboCqDZWK69-?usp=sharing#scrollTo=D5yN_vbT80-p)
+
+[Como usar Streamlit no Colab](https://medium.com/@yash.kavaiya3/running-streamlit-code-in-google-colab-involves-a-few-steps-c43ea0e8c0d9)
