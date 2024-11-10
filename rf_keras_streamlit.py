@@ -1,3 +1,4 @@
+import streamlit as st
 import keras
 import streamlit as st
 import pandas as pd
@@ -8,6 +9,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.utils import plot_model
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.ensemble import RandomForestClassifier
 
 # Função para carregar e processar os dados
 def load_data():
@@ -25,8 +27,42 @@ def preprocess_data(data):
         data[col] = data[col].apply(lambda x: np.random.uniform(mean - std_dev, mean + std_dev) if pd.isna(x) else x)
     return data
 
-def train_keras_model(data):
-    # Selecionar as features relevantes
+def randonforest_trainer (x_train, x_test, y_train, y_test):
+    # Inicializar e treinar o classificador Random Forest
+    clf = RandomForestClassifier(random_state=42)
+    clf.fit(x_train, y_train)
+
+    # Fazer previsões e avaliar o modelo
+    y_pred = clf.predict(x_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred)
+    
+    return clf, accuracy, report
+
+def keras_trainer (x_train, x_test, y_train, y_test):
+  # Criar o modelo
+    model = Sequential()
+    model.add(Dense(64, activation='relu', input_shape=(x_train.shape[1],)))
+    model.add(Dense(32, activation='relu'))
+    model.add(Dense(6, activation='softmax')) # 6 classes (0 a 5)
+
+    # Compilar o modelo
+    optimizer = keras.optimizers.Adam(learning_rate=0.01) # Altere o valor 0.001 para o learning rate desejado
+
+    # Compilar o modelo com o otimizador definido
+    model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+    # Treinar o modelo
+    history = model.fit(x_train, y_train, epochs=60, batch_size=200, validation_split=0.2)
+
+    # Avaliar o modelo
+    loss, accuracy = model.evaluate(x_test, y_test, verbose=0)
+    y_pred = (model.predict(x_test) > 0.5).astype(int)
+  
+    return model, history, accuracy
+
+def encode_df (data):
+  # Selecionar as features relevantes
     features_selected = ['Kerb Weight', 'Safety Features', 'CRS Installation Check', 'Class', 'Seatbelt Reminder']
     features = data[features_selected]
 
@@ -55,27 +91,15 @@ def train_keras_model(data):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    # Criar o modelo
-    model = Sequential()
-    model.add(Dense(64, activation='relu', input_shape=(X_train_scaled.shape[1],)))
-    model.add(Dense(32, activation='relu'))
-    model.add(Dense(6, activation='softmax')) # 6 classes (0 a 5)
+    return encoder, scaler, X_train_scaled, X_test_scaled, y_train, y_test
 
-    # Compilar o modelo
-    optimizer = keras.optimizers.Adam(learning_rate=0.01) # Altere o valor 0.001 para o learning rate desejado
-
-    # Compilar o modelo com o otimizador definido
-    model.compile(optimizer=optimizer, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-
-    # Treinar o modelo
-    history = model.fit(X_train_scaled, y_train, epochs=60, batch_size=200, validation_split=0.2)
-
-    # Avaliar o modelo
-    loss, accuracy = model.evaluate(X_test_scaled, y_test, verbose=0)
-    y_pred = (model.predict(X_test_scaled) > 0.5).astype(int)
-    # report = classification_report(y_test, y_pred)
-    # print(f'Acurácia do modelo: {accuracy}')
-    return model, encoder, scaler, accuracy, history
+def train_models(data):
+    
+    encoder, scaler, X_train_scaled, X_test_scaled, y_train, y_test = encode_df(data)
+    model_keras, history_keras, accuracy_keras = keras_trainer(X_train_scaled, X_test_scaled, y_train, y_test)
+    model_rf, accuracy_rf, report_rf = randonforest_trainer(X_train_scaled, X_test_scaled, y_train, y_test)
+    
+    return encoder, scaler, model_keras, model_rf, accuracy_keras, accuracy_rf, history_keras, report_rf
 
 def user_input_features():
     st.header('Insira os dados do veículo para previsão')
@@ -97,9 +121,11 @@ def user_input_features():
     })
     return user_input
 
+
 # Interface Streamlit
-st.title("Análise de Crash Test de Veículos com Keras")
-st.write("Este aplicativo permite carregar, processar dados e treinar um modelo Keras.")
+st.set_page_config(layout="wide")
+st.title("Análise de Crash Test de Veículos com Randon Forest e Keras")
+st.write("Este aplicativo permite carregar, processar dados e treinar um modelo Random Forest e Keras.")
 
 if st.button("Carregar e processar dados"):
     data = load_data()
@@ -112,28 +138,42 @@ if st.button("Carregar e processar dados"):
 user_input = user_input_features()
 
 if st.button("Rodar Validação"):
-    st.write("Iniciando treinando do modelo Keras!")
+    st.write("Iniciando treinamento dos modelos!")
     data = load_data()
     data = preprocess_data(data)
-    model, encoder, scaler, accuracy, history = train_keras_model(data)
-    st.write("Modelo Keras treinado!")
-    st.write(f"Acurácia no teste: {accuracy:.2f}")
-
-    # Exibir gráfico de histórico de treinamento
-    st.write("Histórico de Treinamento")
-    st.line_chart(pd.DataFrame(history.history))
+    encoder, scaler, model_keras, model_rf, accuracy_keras, accuracy_rf, history_keras, report_rf = train_models(data)
+    st.write("Modelos treinados!")
 
     # Codificação e escalonamento dos dados do usuário
     user_encoded = encoder.transform(user_input[['Class', 'Safety Features', 'CRS Installation Check', 'Seatbelt Reminder']])
     X_user = pd.concat([user_input[['Kerb Weight']], pd.DataFrame(user_encoded, columns=encoder.get_feature_names_out())], axis=1)
     X_user_scaled = scaler.transform(X_user)
 
-    # Previsão
-    prediction = model.predict(X_user_scaled)
-    predicted_class = np.argmax(prediction)
+    # Previsão Random Forest
+    prediction_rf = model_rf.predict(X_user_scaled)
+    predicted_class_rf = prediction_rf[0]
 
-    # Exibir resultado
-    st.write("### Resultado da Previsão")
+    # Previsão Keras
+    prediction_keras = model_keras.predict(X_user_scaled)
+    predicted_class_keras = np.argmax(prediction_keras)
+
     st.write("Entrada do usuário:")
     st.write(user_input)
-    st.write(f"Previsão do Rating: {predicted_class}")
+    
+    c1, c2 = st.columns(2)
+
+    c1.write("### Random Forest")
+    c1.write(f"Acurácia do modelo: {accuracy_rf}")
+    c1.write(report_rf)
+    # Exibir resultado
+    c1.write("### Resultado da Previsão")
+    c1.write(f"Previsão do Rating: {predicted_class_rf}")
+
+    c2.write("### Keras")
+    c2.write(f"Acurácia do modelo: {accuracy_keras}")
+    # Exibir gráfico de histórico de treinamento
+    c2.write("Histórico de Treinamento")
+    c2.line_chart(pd.DataFrame(history_keras.history))
+    # Exibir resultado
+    c2.write("### Resultado da Previsão")
+    c2.write(f"Previsão do Rating: {predicted_class_keras}")
