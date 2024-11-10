@@ -30,7 +30,7 @@ To generate the TOC, open the command palette (Control/⌘+Shift+P) and select t
     - [Estrutura do Notebook](#estrutura-do-notebook)
     - [Escolha do Modelo](#escolha-do-modelo)
     - [Fonte dos Dados](#fonte-dos-dados)
-  - [📌 StreamlitCD.ipynb](#-streamlitcdipynb)
+  - [📌 StreamlitCD_RF_Keras.ipynb](#-streamlitcd_rf_kerasipynb)
     - [Descrição](#descrição-2)
     - [Funcionalidades](#funcionalidades-2)
     - [Estrutura](#estrutura)
@@ -71,11 +71,11 @@ O desenvolvimento será realizado utilizando o Google Colab e demais ferramentas
 O Projeto é composto de 3 arquivos principais:
 - scrappingNew.py
 - CD.ipynb
-- StreamlitCD.ipynb
+- StreamlitCD_RF_Keras.ipynb
 
 Os arquivos `.ipynb` são os notebooks que podem ser executados diretamente no Google Colab. Já o arquivo `.py` é um script que deve ser executado diretamente. Para isso é necessário instalar as bibliotecas:
 ```bash
-pip install -r /path/to/requirements.txt
+pip install -r ./requirements.txt
 ```  
 
 ## 📌 scrappingNew.py
@@ -194,15 +194,15 @@ O notebook carrega os dados de um link para um arquivo CSV com os dados já cole
 
 </br>
 
-## 📌 StreamlitCD.ipynb
+## 📌 StreamlitCD_RF_Keras.ipynb
 ### Descrição
 Esse arquivo possui o mesmo código que `CD.ipynb` tratando-se da análise dos dados e treinamento do modelo. Porém foram feitas as modificações necessárias para criar um frontend Streamlit
 
 ### Funcionalidades
 - **Carregamento e Limpeza de Dados**: O aplicativo carrega um conjunto de dados de crash test e realiza transformações em colunas específicas, incluindo a remoção de unidades e conversão de valores para tipos apropriados.
-- **Treinamento de Modelo Keras**: Treina um modelo de rede neural utilizando o Keras para prever a classificação de segurança do veículo com base em variáveis selecionadas.
+- **Treinamento de Modelo Keras**: Treina um modelo de rede neural utilizando o Keras para prever a classificação de segurança do veículo com base em variáveis selecionadas, em paralelo treina um modelo do Random Forest para efeito comparativo.
 - **Interface Interativa**: Permite ao usuário inserir características de veículos e ver a previsão do modelo em tempo real.
-- **Visualização de Desempenho do Modelo**: Mostra a acurácia do modelo e gráficos de histórico de treinamento.
+- **Visualização de Desempenho do Modelo**: Mostra a acurácia dos modelos e gráficos de histórico de treinamento do Keras a resultados do Random Forest.
 
 ### Estrutura 
 1. **Configuração do Ambiente**:
@@ -226,7 +226,7 @@ Esse arquivo possui o mesmo código que `CD.ipynb` tratando-se da análise dos d
 
 # 📊 Conclusões
 ## 🚀 Funcionamento e Como Utilizar
-Para utilizar o script com frontend Streamlit `StreamlitCD.ipynb` executa-se todas as células. Abaixo da célula `!wget -q -O - ipv4.icanhazip.com` irá aparecer o IP público:
+Para utilizar o script com frontend Streamlit `StreamlitCD_RF_Keras.ipynb` executa-se todas as células. Abaixo da célula `!wget -q -O - ipv4.icanhazip.com` irá aparecer o IP público:
 ![alt text](images/image-2.png)
 
 Já abaixo da célula `!npx localtunnel --port 8501` aparecerá um link:
@@ -242,13 +242,15 @@ Ao acessá-lo você será apresentado à interface do projeto
 
 ## 📽️ Video
 
+[Apresentação](https://youtu.be/lfoUzBCEqUY)
+
 ## 📝 Artigo
 
 ## 🛜 Links do Colab
 
-[Colab](https://colab.research.google.com/drive/1TCuvs70iniyzbc2-su6D5rB1eK1FduuT#scrollTo=NXIfPvveenWZ)
+[Colab](https://colab.research.google.com/drive/1HpAjbqDpC8de666-JAOfuM6hRL4bSq3z?usp=sharing)
 
 
-[Colab + Streamlit](https://colab.research.google.com/drive/1uKFoF86mV_WHvfIHBgtEZboCqDZWK69-?usp=sharing#scrollTo=D5yN_vbT80-p)
+[Colab + Streamlit](https://colab.research.google.com/drive/1gC_xmsHEnGcACMlSZxwAi528CsnVk-4x?usp=sharing)
 
 [Como usar Streamlit no Colab](https://medium.com/@yash.kavaiya3/running-streamlit-code-in-google-colab-involves-a-few-steps-c43ea0e8c0d9)

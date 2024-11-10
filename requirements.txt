@@ -1,0 +1,7 @@
+#Necessário ter as seguintes bibliotecas instaladas e disponíveis para funcionamento correto do código
+bs4
+pandas
+streamit
+sickit-learn
+numpy
+keras
