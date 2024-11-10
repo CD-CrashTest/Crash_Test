@@ -124,7 +124,7 @@ def user_input_features():
 
 # Interface Streamlit
 st.set_page_config(layout="wide")
-st.title("Análise de Crash Test de Veículos com Randon Forest e Keras")
+st.title("Análise de Crash Test de Veículos com Random Forest e Keras")
 st.write("Este aplicativo permite carregar, processar dados e treinar um modelo Random Forest e Keras.")
 
 if st.button("Carregar e processar dados"):
