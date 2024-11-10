@@ -27,11 +27,11 @@ O desenvolvimento será realizado utilizando o Google Colab e demais ferramentas
 
 
 # 🚀 Funcionamento
-![alt text](image.png)
-![alt text](image-1.png)
+![alt text](images/image.png)
+![alt text](images/image-1.png)
 # 🛜 Links do Colab
 
 [Colab](https://colab.research.google.com/drive/1TCuvs70iniyzbc2-su6D5rB1eK1FduuT#scrollTo=NXIfPvveenWZ)
 
 
-StreamLit - [Colab](https://colab.research.google.com/drive/1TCuvs70iniyzbc2-su6D5rB1eK1FduuT#scrollTo=NXIfPvveenWZ)
+[Colab + Streamlit](https://colab.research.google.com/drive/1uKFoF86mV_WHvfIHBgtEZboCqDZWK69-?usp=sharing#scrollTo=D5yN_vbT80-p)
