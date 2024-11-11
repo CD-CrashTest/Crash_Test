@@ -247,6 +247,8 @@ Ao acessá-lo você será apresentado à interface do projeto
 
 ## 📝 Artigo
 
+![Artigo-Projeto](Documents/Artigo%20Projeto%20Semestral%20-%20Ciência%20de%20Dados.pdf)
+
 ## 🛜 Links do Colab
 
 [Colab](https://colab.research.google.com/drive/1HpAjbqDpC8de666-JAOfuM6hRL4bSq3z?usp=sharing)
